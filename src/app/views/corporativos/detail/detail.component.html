@@ -1,0 +1,230 @@
+<section *ngIf="ObjectKeys(user).length > 0" class="users-edit">
+  <div class="row">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-content">
+          <div class="card-body">
+            <!-- Nav-tabs -->
+            <ul ngbNav #nav="ngbNav" [activeId]="1" class="nav-tabs justify-content-left">
+              <li [ngbNavItem]="1">
+                <a ngbNavLink class="nav-link d-flex align-items-center">
+                  <i class="far fa-file mr-1"></i>
+                  <span class="d-none d-sm-block">Datos Generales</span>
+                </a>
+                <ng-template ngbNavContent>
+                  <!-- Account content starts -->
+                  <div class="mt-2" id="account">
+                    <!-- Media object starts -->
+                    <div class="media">
+                      <img [src]="user.S_LogoURL" alt="user edit avatar"
+                        class="users-avatar-shadow avatar mr-3 rounded-circle" height="64" width="64">
+                      <div class="media-body">
+                        <h4>{{user.S_NombreCorto}}</h4>
+                      </div>
+                    </div>
+                    <!-- Media object ends -->
+
+                    <!-- Account form starts -->
+                    <form [formGroup]="form">
+                      <div class="row">
+                        <div class="col-3 col-md-3">
+                          <div class="form-group">
+                            <div class="controls">
+                              <label for="users-edit-username">Nombre Corto</label>
+                              <input [readonly]="edit" formControlName="nombre_corto" type="text" id="users-edit-username" class="form-control" placeholder="Username"
+                                 required aria-invalid="false">
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class="col-6 col-md-6">
+                          <div class="form-group">
+                            <div class="controls">
+                              <label for="users-edit-username">Nombre Completo</label>
+                              <input [readonly]="edit" formControlName="nombre_completo" type="text" id="users-edit-username" class="form-control" placeholder="Username"
+                                 required aria-invalid="false">
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class="col-3 col-md-3">
+                          <div class="form-group">
+                            <div class="controls">
+                              <label for="users-edit-role">Status</label>
+                              <select [readonly]="edit" id="users-edit-role" class="form-control" required>
+                                <option [disabled]="edit">Activo</option>
+                                <option [disabled]="edit">Inactivo</option>
+                              </select>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class="col-6 col-md-4">
+                          <div class="form-group">
+                            <div class="controls">
+                              <label for="users-edit-username">Fecha de Incorporación</label>
+                              <input [readonly]="edit" formControlName="fecha_incorporacion" type="text" id="users-edit-username" class="form-control" placeholder="Username"
+                                 required aria-invalid="false">
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class="col-6 col-md-4">
+                          <div class="form-group">
+                            <div class="controls">
+                              <label for="users-edit-username">URL del Sistema</label>
+                              <input [readonly]="edit" formControlName="url" type="text" id="users-edit-username" class="form-control" placeholder="Username"
+                                 required aria-invalid="false">
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class="col-12 d-flex flex-sm-row flex-column justify-content-end mt-3 mt-sm-2">
+                          <button  *ngIf="!edit" (click)="edit = true" class="btn btn-secondary mx-3">Cancelar</button>
+                          <button (click)="back(); edit = false"  *ngIf="edit" class="btn btn-secondary mx-3">Regresar</button>
+                          <button *ngIf="!edit" (click)="edit = true" class="btn btn-primary mb-2 mb-sm-0 mr-sm-2 mx-3">Guardar Cambios</button>
+                          <button *ngIf="edit" (click)="edit = false" class="btn btn-primary mb-2 mb-sm-0 mr-sm-2 mx-3">Editar</button>
+                        </div>
+                      </div>
+                    </form>
+                    <!-- Account form ends -->
+                  </div>
+                  <!-- Account content ends -->
+                </ng-template>
+              </li>
+              <li [ngbNavItem]="2">
+                <a ngbNavLink class="nav-link d-flex align-items-center">
+                  <i class="fas fa-user-friends mr-1"></i>
+                  <span class="d-none d-sm-block">Contactos</span>
+                </a>
+                <ng-template ngbNavContent>
+                  <!-- Information content starts -->
+                  <div class="mt-2" id="information">
+                    <!-- Information form starts -->
+                    <div class="media">
+                      <img [src]="user.S_LogoURL" alt="user edit avatar"
+                        class="users-avatar-shadow avatar mr-3 rounded-circle" height="64" width="64">
+                      <div class="media-body">
+                        <h4>Contactos</h4>
+                      </div>
+                    </div>
+
+                    <div class="col-12 users-module">
+                      <div class="table-responsive">
+                        <table class="table mb-0 mt-3">
+                          <thead>
+                            <tr>
+                              <th>Nombre</th>
+                              <th>Puesto</th>
+                              <th>Télefono</th>
+                              <th>Celular</th>
+                              <th>Email</th>
+                              <th>Observaciones</th>
+                              <th>Acciones</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr *ngFor="let contact of user.tw_contactos_corporativo">
+                              <td> {{contact.S_Nombre}} </td>
+                              <td>{{contact.S_Puesto}}</td>
+                              <td>{{contact.N_TelefonoFijo}}</td>
+                              <td>{{contact.N_TelefonoMovil}}</td>
+                              <td>{{contact.S_Email}}</td>
+                              <td>{{contact.S_Comentarios}}</td>
+                              <td>
+                                <div class="d-flex justify-content-around">
+                                  <i (click)="setValues(contact, contact.id)" class="far fa-edit cursor-pointer"></i>
+                                  <i (click)="trash(contact.id)" class="fas fa-trash cursor-pointer"></i>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+
+                    <div class="col-12 users-module">
+                      <form [formGroup]="formToSubmit">
+                        <div class="row">
+                          <div class="col-3 col-md-4">
+                            <div class="form-group">
+                              <div class="controls">
+                                <label for="users-edit-username">Nombre</label>
+                                <input formControlName="S_Nombre" type="text" id="users-edit-username" class="form-control" placeholder="Username"
+                                   required aria-invalid="false">
+                              </div>
+                            </div>
+                          </div>
+
+                          <div class="col-6 col-md-4">
+                            <div class="form-group">
+                              <div class="controls">
+                                <label for="users-edit-username">Puesto</label>
+                                <input formControlName="S_Puesto" type="text" id="users-edit-username" class="form-control" placeholder="Username"
+                                   required aria-invalid="false">
+                              </div>
+                            </div>
+                          </div>
+
+                          <div class="col-3 col-md-4">
+                            <div class="form-group">
+                              <div class="controls">
+                                <label for="users-edit-role">Comentarios</label>
+                                <input formControlName="S_Comentarios" type="text" id="users-edit-username" class="form-control" placeholder="Username"
+                                   required aria-invalid="false">
+                              </div>
+                            </div>
+                          </div>
+
+                          <div class="col-6 col-md-3">
+                            <div class="form-group">
+                              <div class="controls">
+                                <label for="users-edit-username">Télefono Fijo</label>
+                                <input formControlName="N_TelefonoFijo" type="number" id="users-edit-username" class="form-control" placeholder="Username"
+                                   required aria-invalid="false">
+                              </div>
+                            </div>
+                          </div>
+
+                          <div class="col-6 col-md-3">
+                            <div class="form-group">
+                              <div class="controls">
+                                <label for="users-edit-username">Télefono movil</label>
+                                <input formControlName="N_TelefonoMovil" type="number" id="users-edit-username" class="form-control" placeholder="Username"
+                                   required aria-invalid="false">
+                              </div>
+                            </div>
+                          </div>
+
+                          <div class="col-6 col-md-3">
+                            <div class="form-group">
+                              <div class="controls">
+                                <label for="users-edit-username">Email</label>
+                                <input formControlName="S_Email" type="text" id="users-edit-username" class="form-control" placeholder="Username"
+                                   required aria-invalid="false">
+                              </div>
+                            </div>
+                          </div>
+
+                          <div class="col-3 d-flex flex-sm-row flex-column justify-content-end mt-3 mt-sm-2">
+                            <button (click)="sendContact()" class="btn btn-secondary mx-3"> {{ editContact ? 'Editar' : 'Guardar' }} </button>
+                          </div>
+                        </div>
+                      </form>
+                    </div>
+
+                    <!-- Information form ends -->
+                  </div>
+                  <!-- Information content ends -->
+                </ng-template>
+              </li>
+            </ul>
+            <div class="tab-content">
+              <div [ngbNavOutlet]="nav"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
